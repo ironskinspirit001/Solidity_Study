@@ -2,7 +2,7 @@
 const solData = require('../build/contracts/AuctionV1.json');
 const abi = solData.abi;
 
-const contractAddr='0xDcF6b3F48B7f5ad3634B2F1a2b04d4Ad99a7D622'; 
+const contractAddr='0x3F8EcC4D7B57b2FC2D97b6636505AE533A2E8ED8'; 
  
 const { Web3 } = require("web3"); 
  
@@ -12,12 +12,8 @@ const web3 = new Web3("http://127.0.0.1:7545");
  
 var myContract = new web3.eth.Contract(abi, contractAddr); 
  
-var accountFrom='0x1509f8f1994Fd3BdC484e579d62A0270dc1189C6';
-
-web3.eth.getBalance(accountFrom).then(balance => {
-    console.log('account balance:', web3.utils.fromWei(balance, 'ether'));
-});
-
+var accountFrom1='0x1509f8f1994Fd3BdC484e579d62A0270dc1189C6';
+var accountFrom2='0xe028Cc31EB7Bb11Ebc57dA4178f22FAE00132b92';
 
 myContract.methods.auctionEndTime().call().then(
     result => { 
@@ -27,21 +23,24 @@ myContract.methods.auctionEndTime().call().then(
 );
 
 myContract.methods.bid().send({
-    from: accountFrom,
-    data: "bid test with 10 ether.",
-    value: web3.utils.toWei('1', 'ether')
+    from: accountFrom1,
+    gas: 1500000,
+    data: "bid test with 8 ether.",
+    value: web3.utils.toWei('8', 'ether')
 }).then(function(receipt){
-    console.log("bid result:");
-    console.log(receipt);
+    //console.log("bid result:");
+    //console.log(receipt);
+    return web3.eth.getBalance(contractAddr);
+}).then(balance => {
+    console.log('contract balance:', web3.utils.fromWei(balance, 'ether'));
+    return myContract.methods.getHighestBidInfo().call();
+}).then(result => {  
+    //const [addr, amount] = result;
+    console.log( "highestBidder: " + result[0] + "  " + result[1]); 
+}).catch(error => {
+    console.log("bid error:");
+    console.log(error);
 });
 
-/*
 
 
-
-myContract.methods.store(1888).send({from:accountFrom}, function(error, transactionHash){ });
-
-myContract.
- 
-console.log(transactionHash);
-*/
