@@ -2,7 +2,7 @@
 const solData = require('../build/contracts/AuctionV1.json');
 const abi = solData.abi;
 
-const contractAddr='0x3F8EcC4D7B57b2FC2D97b6636505AE533A2E8ED8'; 
+const contractAddr='0xb262EA2c913Cf4388849c4c87d1bA0B902238c90'; 
  
 const { Web3 } = require("web3"); 
  
@@ -25,8 +25,8 @@ myContract.methods.auctionEndTime().call().then(
 myContract.methods.bid().send({
     from: accountFrom1,
     gas: 1500000,
-    data: "bid test with 8 ether.",
-    value: web3.utils.toWei('8', 'ether')
+    data: "bid test with 10 ether.",
+    value: web3.utils.toWei('10', 'ether')
 }).then(function(receipt){
     //console.log("bid result:");
     //console.log(receipt);

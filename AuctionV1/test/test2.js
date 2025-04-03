@@ -14,8 +14,6 @@ async function main() {
     try{
         var myContract = new web3.eth.Contract(abi, contractAddr);
 
-
-        //let a = await myContract.methods.auctionEnd().call()
         let a = myContract.methods.auctionEnd().send({
             from: accountFrom1,
             gas: 1500000,
@@ -27,8 +25,6 @@ async function main() {
     }catch(res){
         console.log(res);
     }
-
-
         
 }
 
